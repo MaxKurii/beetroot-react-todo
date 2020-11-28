@@ -1,9 +1,10 @@
-function Checkbox({ children, ...props }) {
+function Switch({ children, ...props }) {
   return (
-    <label className="matter-checkbox">
+    <label className="matter-switch">
       <input
         {...props}
         type="checkbox"
+        role="switch"
       />
       <span>{children}</span>
     </label>
@@ -11,5 +12,5 @@ function Checkbox({ children, ...props }) {
 }
 
 export {
-  Checkbox
+  Switch
 }

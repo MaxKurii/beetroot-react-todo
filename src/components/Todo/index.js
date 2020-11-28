@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { nanoid } from 'nanoid';
 
 import { Loader } from '../shared/Loader';
+import { Switch } from '../shared/Switch';
 import { TodoForm } from './components/TodoForm';
 import { TodoItem } from './components/TodoItem';
 import { exclude } from './lib/exclude';
@@ -11,11 +12,28 @@ import "./style.scss";
 
 function Todo() {
   const [todos, setTodos] = useState({})
+  const [filteredTodos, setFilteredTodos] = useState([]);
+  const [selectedTodo, setSelectedTodo] = useState(null);
   const [isLoading, setLoading] = useState(true);
+  const [isCompleted, setCompleted] = useState(false);
 
   useEffect(() => {
     fetchTodos();
   }, [])
+
+  useEffect(() => {
+    const items = Object.values(todos);
+
+    if (!isCompleted) {
+      setFilteredTodos(
+        Object.values(items)
+      )
+    } else {
+      setFilteredTodos(
+        items.filter(item => item.isCompleted)
+      )
+    }
+  }, [isCompleted, todos])
 
   const fetchTodos = async () => {
     setLoading(true)
@@ -52,6 +70,10 @@ function Todo() {
       ...todos,
       [todo.id]: todo
     });
+
+    if (selectedTodo) {
+      setSelectedTodo(null);
+    }
   }
 
   return (
@@ -61,26 +83,39 @@ function Todo() {
         {
           !isLoading &&
           <>
+            <header className="todo__header">
+              <Switch
+                checked={isCompleted}
+                onChange={() => setCompleted(!isCompleted)}
+              >
+                {!isCompleted ? 'All' : 'Completed todos'}
+              </Switch>
+            </header>
             {
-              Object.values(todos).length > 0 ?
+              filteredTodos.length > 0 ?
                 <ul className="todo__list">
                   {
-                    Object.values(todos).map(todo =>
+                    filteredTodos.map(todo =>
                       <TodoItem
                         handleDelete={deleteTodo}
                         handleUpdate={updateTodo}
+                        handleSelect={setSelectedTodo}
                         todo={todo}
                         key={todo.id}
                       />)
                   }
                 </ul> :
-                <p className="matter-h5 todo__empty-message">You have not any todos 🤔</p>
+                <p className="matter-h5 todo__empty-message">You have no any todos 🤔</p>
             }
           </>
         }
       </div>
 
-      <TodoForm handleCreate={createTodo} />
+      <TodoForm
+        handleCreate={createTodo}
+        handleUpdate={updateTodo}
+        selectedTodo={selectedTodo}
+      />
     </div>
   )
 }

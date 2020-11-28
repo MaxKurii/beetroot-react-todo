@@ -1,0 +1,15 @@
+.input {
+  padding-bottom: 35px;
+  position: relative;
+
+  label {
+    width: 100%;
+  }
+}
+
+.input__error-message {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  font-size: 13px;
+}

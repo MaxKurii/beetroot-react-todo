@@ -1,6 +1,7 @@
 .todo-form {
   display: flex;
   align-items: center;
+  padding: 0 var(--frame-offset-x);
 }
 
 .todo-form__textfield {
