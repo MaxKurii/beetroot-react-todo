@@ -16,7 +16,7 @@ function TodoItem(props) {
       />
 
       <p className={`matter-body1 todo-item__descr ${todo.isCompleted && 'todo-item__descr--completed'}`}>
-        {todo.description}
+        {todo.title}
       </p>
 
       <Button

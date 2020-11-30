@@ -10,12 +10,12 @@ function TodoForm(props) {
 
   const [hasError, setError] = useState(false);
   const [value, setValue] = useState(
-    selectedTodo ? selectedTodo.description : ''
+    selectedTodo ? selectedTodo.title : ''
   );
 
   useEffect(() => {
     if (selectedTodo !== null) {
-      setValue(selectedTodo.description);
+      setValue(selectedTodo.title);
     }
   }, [selectedTodo])
 
@@ -30,7 +30,7 @@ function TodoForm(props) {
     if (selectedTodo) {
       handleUpdate({
         ...selectedTodo,
-        description: value
+        title: value
       });
     } else {
       handleCreate(value);
