@@ -28,7 +28,11 @@ function Todo() {
 
     })
     .then(data=>{
-      console.log(data);
+      const items = data.reduse((acc,current)=>({
+        ...acc,
+        [current.id]:current
+      }))
+      setTodos(items);
     })
     .finally(()=>setLoading(false))
   }, []);
