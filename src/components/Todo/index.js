@@ -6,7 +6,7 @@ import { Switch } from '../shared/Switch';
 import { TodoForm } from './components/TodoForm';
 import { TodoItem } from './components/TodoItem';
 import { exclude } from './lib/exclude';
-// import * as api from '../../api/todos';
+import { todosService } from '../../api/todos';
 
 import "./style.scss";
 
@@ -18,23 +18,7 @@ function Todo() {
   const [isCompleted, setCompleted] = useState(false);
 
   useEffect(() => {
-    // fetchTodos();
-    fetch('https://jsonplaceholder.typicode.com/todos/',{
-      method:"GET",
-      
-    })
-    .then(response=>{
-      return response.json()
-
-    })
-    .then(data=>{
-      const items = data.reduse((acc,current)=>({
-        ...acc,
-        [current.id]:current
-      }))
-      setTodos(items);
-    })
-    .finally(()=>setLoading(false))
+    fetchTodos();
   }, []);
 
   useEffect(() => {
@@ -51,12 +35,11 @@ function Todo() {
     }
   }, [isCompleted, todos])
 
-  // const fetchTodos = async () => {
-  //   setLoading(true)
-  //   const response = await api.fetchTodos()
-  //   setTodos(response);
-  //   setLoading(false)
-  // }
+  const fetchTodos = async () => {
+    const items = await todosService.fetchTodos();
+    setTodos(items);
+    setLoading(false);
+  }
 
   const createTodo = (title) => {
     const todo = {
@@ -71,7 +54,8 @@ function Todo() {
     });
   }
 
-  const deleteTodo = (id) => {
+  const deleteTodo = async (id) => {
+    await todosService.deleteTodo(id);
     const filteredTodos = exclude({
       key: id,
       source: todos

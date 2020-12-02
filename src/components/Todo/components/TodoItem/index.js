@@ -8,14 +8,14 @@ function TodoItem(props) {
   return (
     <li className="todo-item">
       <Checkbox
-        checked={todo.isCompleted}
+        checked={todo.completed}
         onChange={() => handleUpdate({
           ...todo,
-          isCompleted: !todo.isCompleted
+          completed: !todo.completed
         })}
       />
 
-      <p className={`matter-body1 todo-item__descr ${todo.isCompleted && 'todo-item__descr--completed'}`}>
+      <p className={`matter-body1 todo-item__descr ${todo.completed && 'todo-item__descr--completed'}`}>
         {todo.title}
       </p>
 
