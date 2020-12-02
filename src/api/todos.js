@@ -1,35 +1,48 @@
+import { nanoid } from 'nanoid';
 import { convert } from '../lib/convert';
+import { request } from './request';
 
 async function fetchTodos() {
-  // return new Promise(resolve => {
-  //   fetch('https://jsonplaceholder.typicode.com/todos/', {
-  //     method: "GET",
-  //   })
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       const items = convert(data);
-  //       resolve(items);
-  //     })
-  // })
-
-  const response = await fetch('https://jsonplaceholder.typicode.com/todos/', {
-    method: "GET",
-  })
-  const data = await response.json();
+  const data = await request({
+    url: "/todos",
+    method: "GET"
+  });
   return convert(data);
 }
 
 async function deleteTodo(id) {
-  const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
-    method: "DELETE",
+  request({
+    url: `/todos/${id}`,
+    method: "DELETE"
+  });
+}
+
+async function createTodo({ title, completed }) {
+  const data = await request({
+    url: '/todos',
+    method: "POST",
+    body: { title, completed },
   })
-  const data = await response.json();
-  console.log(data);
+
+  return {
+    ...data,
+    id: nanoid()
+  }
+}
+
+async function editTodo({ id, ...body }) {
+  await request({
+    body,
+    url: `/todos/${id}`,
+    method: "PATCH",
+  })
 }
 
 const todosService = {
   fetchTodos,
-  deleteTodo
+  deleteTodo,
+  createTodo,
+  editTodo
 }
 
 export {

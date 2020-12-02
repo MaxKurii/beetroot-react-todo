@@ -29,7 +29,7 @@ function TodoForm(props) {
 
     if (selectedTodo) {
       handleUpdate({
-        ...selectedTodo,
+        id: selectedTodo.id,
         title: value
       });
     } else {

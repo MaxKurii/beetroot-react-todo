@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { nanoid } from 'nanoid';
 
 import { Loader } from '../shared/Loader';
 import { Switch } from '../shared/Switch';
@@ -41,16 +40,15 @@ function Todo() {
     setLoading(false);
   }
 
-  const createTodo = (title) => {
-    const todo = {
+  const createTodo = async (title) => {
+    const todo = await todosService.createTodo({
       title,
-      id: nanoid(),
       completed: false,
-    };
+    });
 
     setTodos({
       ...todos,
-      [todo.id]: todo
+      [todo.id]: todo,
     });
   }
 
@@ -65,9 +63,13 @@ function Todo() {
   }
 
   const updateTodo = (todo) => {
+    todosService.editTodo(todo);
     setTodos({
       ...todos,
-      [todo.id]: todo
+      [todo.id]: {
+        ...todos[todo.id],
+        ...todo
+      }
     });
 
     if (selectedTodo) {

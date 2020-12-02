@@ -10,7 +10,7 @@ function TodoItem(props) {
       <Checkbox
         checked={todo.completed}
         onChange={() => handleUpdate({
-          ...todo,
+          id: todo.id,
           completed: !todo.completed
         })}
       />
