@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { Loader } from '../shared/Loader';
 import { Switch } from '../shared/Switch';
@@ -15,6 +15,8 @@ function Todo() {
   const [selectedTodo, setSelectedTodo] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const [isCompleted, setCompleted] = useState(false);
+
+  const container = useRef(null);
 
   useEffect(() => {
     fetchTodos();
@@ -50,6 +52,7 @@ function Todo() {
       ...todos,
       [todo.id]: todo,
     });
+    container.current.scrollTo(0,container.current.scrollHeight)
   }
 
   const deleteTodo = async (id) => {
