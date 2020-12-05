@@ -7,7 +7,11 @@ async function fetchTodos() {
     url: "/todos",
     method: "GET"
   });
-  return convert(data);
+  const withTimestamp = data.map(todo => ({
+    ...todo,
+    timestamp: 0
+  }));
+  return convert(withTimestamp);
 }
 
 async function deleteTodo(id) {
@@ -26,7 +30,8 @@ async function createTodo({ title, completed }) {
 
   return {
     ...data,
-    id: nanoid()
+    id: nanoid(),
+    timestamp: Date.now()
   }
 }
 

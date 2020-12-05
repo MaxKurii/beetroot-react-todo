@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '../../../shared/Button';
 import { Input } from '../../../shared/Input';
@@ -12,10 +12,12 @@ function TodoForm(props) {
   const [value, setValue] = useState(
     selectedTodo ? selectedTodo.title : ''
   );
+  const input = useRef(null);
 
   useEffect(() => {
     if (selectedTodo !== null) {
       setValue(selectedTodo.title);
+      input.current.focus();
     }
   }, [selectedTodo])
 
@@ -24,6 +26,7 @@ function TodoForm(props) {
 
     if (value.trim().length === 0) {
       setError(true);
+      input.current.focus();
       return;
     }
 
@@ -58,6 +61,7 @@ function TodoForm(props) {
         onInput={handleInput}
         onBlur={() => setError(false)}
         errorMessage={hasError && "Your todo should be contain minimum 1 letter 😡"}
+        ref={input}
       >
         New todo
       </Input>

@@ -1,25 +1,25 @@
+import { forwardRef } from 'react';
 import "./style.scss";
 
-function Input({ errorMessage = null, children, className, ...props }) {
-  return (
-    <div className={`input ${className}`}>
-      <label className={`matter-textfield-standard ${errorMessage && 'matter-error'}`}>
-        <input
-          {...props}
-          placeholder=" "
-        />
-        <span>
-          {children}
-        </span>
-      </label>
-      {errorMessage &&
-        <span className="input__error-message matter-error-text">
-          {errorMessage}
-        </span>
-      }
-    </div>
-  )
-}
+const Input = forwardRef(({ errorMessage = null, children, className, ...props }, ref) => (
+  <div className={`input ${className}`}>
+    <label className={`matter-textfield-standard ${errorMessage && 'matter-error'}`}>
+      <input
+        {...props}
+        ref={ref}
+        placeholder=" "
+      />
+      <span>
+        {children}
+      </span>
+    </label>
+    {errorMessage &&
+      <span className="input__error-message matter-error-text">
+        {errorMessage}
+      </span>
+    }
+  </div>
+));
 
 export {
   Input
